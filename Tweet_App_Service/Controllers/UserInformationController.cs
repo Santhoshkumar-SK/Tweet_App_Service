@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Tweet_App_Service.Controllers
 {
     [Route("api/v1.0/tweets")]
     [ApiController]
+    [Authorize]
     public class UserInformationController : ControllerBase
     {
         IUserInformationRepo _userInfoRepo;

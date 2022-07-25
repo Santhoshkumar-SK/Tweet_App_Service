@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Threading.Tasks;
 using Tweet_App_Service.DataContext;
 using Tweet_App_Service.Models;
@@ -11,9 +15,11 @@ namespace Tweet_App_Service.Repositories
     {
         static readonly log4net.ILog _logging = log4net.LogManager.GetLogger(typeof(AuthenticationRepo));
         private IMongoCollection<UserInfo> _userInfoCollection;
-        public AuthenticationRepo(IDBContext dBContext)
+        private IConfiguration _config;
+        public AuthenticationRepo(IDBContext dBContext, IConfiguration config)
         {
             _userInfoCollection = dBContext.GetUserInfoCollection();
+            _config = config;
         }
 
         public async Task<BaseResponse<LoginResponse>> UserLogin(LoginDTO loginInfo)
@@ -41,7 +47,7 @@ namespace Tweet_App_Service.Repositories
                 }
 
                 var loginResponse = new LoginResponse();
-                loginResponse.BearerToken = "Token Need to be Generated";  //TODO : Need to generate the JWT Bearer Token with Login ID in claims
+                loginResponse.BearerToken = GenerateJsonWebToken();  //TODO : Need to generate the JWT Bearer Token with Login ID in claims
                 loginResponse.LoginMessage = "Login Successfull";
                 response.IsSuccess = true;
                 response.HttpStatusCode = StatusCodes.Status200OK;
@@ -101,6 +107,25 @@ namespace Tweet_App_Service.Repositories
             }
 
             return response;
+        }
+
+        public string GenerateJsonWebToken()
+        {
+            string tokenKey = _config.GetValue<string>("JsonWebTokenKey");
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var tokenDescripter = new SecurityTokenDescriptor
+            {
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = credentials                
+            };
+
+            var tokenHandeler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandeler.CreateToken(tokenDescripter);
+            var jwtToken = tokenHandeler.WriteToken(securityToken);
+
+            return jwtToken;
         }
     }
 }
