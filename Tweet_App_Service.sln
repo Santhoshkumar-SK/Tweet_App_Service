@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tweet_App_Service", "Tweet_App_Service\Tweet_App_Service.csproj", "{0F71B2C9-4549-4BEB-8A9A-2C78ECBCE9D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tweet_App_Service", "Tweet_App_Service\Tweet_App_Service.csproj", "{0F71B2C9-4549-4BEB-8A9A-2C78ECBCE9D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tweet_App_Service_Test", "Tweet_App_Service_Test\Tweet_App_Service_Test.csproj", "{49D4FFE9-8D88-4BE9-938F-B8F7C3A0A6DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0F71B2C9-4549-4BEB-8A9A-2C78ECBCE9D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F71B2C9-4549-4BEB-8A9A-2C78ECBCE9D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F71B2C9-4549-4BEB-8A9A-2C78ECBCE9D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49D4FFE9-8D88-4BE9-938F-B8F7C3A0A6DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49D4FFE9-8D88-4BE9-938F-B8F7C3A0A6DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49D4FFE9-8D88-4BE9-938F-B8F7C3A0A6DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49D4FFE9-8D88-4BE9-938F-B8F7C3A0A6DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
