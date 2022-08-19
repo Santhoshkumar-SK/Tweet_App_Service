@@ -17,6 +17,7 @@ namespace Tweet_App_Service.Models
         public DateTime TimeofPost { get; set; }
         public string TweetMessage { get; set; }
         public int NumberOfLikes { get; set; }
+        public List<string> LikedUsers { get; set; }
         public bool IsReplyFlag { get; set; }
         public List<string> RepliedTweetIds { get; set; }
     }

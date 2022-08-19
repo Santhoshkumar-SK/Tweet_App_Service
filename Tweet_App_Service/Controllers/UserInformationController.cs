@@ -11,8 +11,7 @@ using Tweet_App_Service.Repositories;
 namespace Tweet_App_Service.Controllers
 {
     [Route("api/v1.0/tweets")]
-    [ApiController]
-    [Authorize]
+    [ApiController]    
     public class UserInformationController : ControllerBase
     {
         IUserInformationRepo _userInfoRepo;
@@ -31,6 +30,7 @@ namespace Tweet_App_Service.Controllers
 
         [Route("users/all")]
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<BaseResponse<List<UserInfo>>>> GetAllUsers()
         {
             BaseResponse<List<UserInfo>> response = await _userInfoRepo.GetAllUsers();
@@ -39,6 +39,7 @@ namespace Tweet_App_Service.Controllers
 
         [Route("users/search/{username}")]
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<BaseResponse<List<UserInfo>>>> SearchUsersbyUsername(string username)
         {
             BaseResponse<List<UserInfo>> response = await _userInfoRepo.SearchUsersbyUsername(username);

@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Tweet_App_Service.DataContext;
@@ -47,7 +48,7 @@ namespace Tweet_App_Service.Repositories
                 }
 
                 var loginResponse = new LoginResponse();
-                loginResponse.BearerToken = GenerateJsonWebToken();  //TODO : Need to generate the JWT Bearer Token with Login ID in claims
+                loginResponse.BearerToken = GenerateJsonWebToken(loginInfo.LoginId);  //TODO : Need to generate the JWT Bearer Token with Login ID in claims
                 loginResponse.LoginMessage = "Login Successfull";
                 response.IsSuccess = true;
                 response.HttpStatusCode = StatusCodes.Status200OK;
@@ -109,7 +110,7 @@ namespace Tweet_App_Service.Repositories
             return response;
         }
 
-        public string GenerateJsonWebToken()
+        public string GenerateJsonWebToken(string username)
         {
             string tokenKey = _config.GetValue<string>("JsonWebTokenKey");
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
@@ -118,7 +119,11 @@ namespace Tweet_App_Service.Repositories
             var tokenDescripter = new SecurityTokenDescriptor
             {
                 Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = credentials                
+                SigningCredentials = credentials,
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim("Username",username)
+                })                             
             };
 
             var tokenHandeler = new JwtSecurityTokenHandler();

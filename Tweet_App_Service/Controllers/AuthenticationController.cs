@@ -20,7 +20,7 @@ namespace Tweet_App_Service.Controllers
         }
 
         [Route("login")]
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult<BaseResponse<LoginResponse>>> UserLogin(LoginDTO loginInfo)
         {
             BaseResponse<LoginResponse> response = await _authRepo.UserLogin(loginInfo);

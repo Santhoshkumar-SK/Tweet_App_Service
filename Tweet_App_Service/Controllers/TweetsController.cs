@@ -48,9 +48,9 @@ namespace Tweet_App_Service.Controllers
 
         [Route("{username}/like/{id}")]
         [HttpPut]
-        public async Task<ActionResult<BaseResponse<TweetsResponse>>> LikeTweet(string id)
+        public async Task<ActionResult<BaseResponse<TweetsResponse>>> LikeTweet(string username,string id)
         {
-            BaseResponse<TweetsResponse> response = await _tweetsRepo.LikeTweet(id);
+            BaseResponse<TweetsResponse> response = await _tweetsRepo.LikeTweet(id,username);
             return StatusCode(response.HttpStatusCode, response);
         }
 

@@ -26,6 +26,7 @@ namespace Tweet_App_Service.Repositories
             try
             {
                 tweets.TweetId = Guid.NewGuid().ToString();
+                tweets.TimeofPost =  DateTime.Now ;
                 await _tweetsCollection.InsertOneAsync(tweets);
                 response.IsSuccess = true;
                 response.HttpStatusCode = StatusCodes.Status201Created;
@@ -114,15 +115,26 @@ namespace Tweet_App_Service.Repositories
             return response;
         }
 
-        public async Task<BaseResponse<TweetsResponse>> LikeTweet(string tweetId)
+        public async Task<BaseResponse<TweetsResponse>> LikeTweet(string tweetId,string username)
         {
             BaseResponse<TweetsResponse> response = new BaseResponse<TweetsResponse>();
             response.Result = new TweetsResponse();
             try
             {
-                //To find and update the tweet.
                 var filter = Builders<PostedTweet>.Filter.Where(tw => tw.TweetId == tweetId);
-                var update = Builders<PostedTweet>.Update.Inc("NumberOfLikes", 1);
+                PostedTweet postedTweet = _tweetsCollection.Find(filter).FirstOrDefaultAsync().Result;
+                if (postedTweet == null)
+                {
+                    response.IsSuccess = false;
+                    response.HttpStatusCode = StatusCodes.Status400BadRequest;
+                    response.ErrorInfo = "Invaild Tweet ID";
+                    return response;
+                }
+
+                //To find and update the tweet.                
+                postedTweet.NumberOfLikes += 1;
+                postedTweet.LikedUsers.Add(username);
+                var update = Builders<PostedTweet>.Update.Set("NumberOfLikes",postedTweet.NumberOfLikes).Set("LikedUsers",postedTweet.LikedUsers);
                 PostedTweet updatedTweet = await _tweetsCollection.FindOneAndUpdateAsync(filter, update);
 
                 if (updatedTweet == null)

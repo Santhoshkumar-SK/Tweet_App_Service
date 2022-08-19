@@ -26,6 +26,14 @@ namespace Tweet_App_Service.Repositories
             response.Result = new UserInfoResponse();
             try
             {
+                var validationResult = CheckIsUsernameValid(userInfo.LoginId, userInfo.Email);
+                if(!validationResult["name"] || !validationResult["email"])
+                {
+                    response.IsSuccess = false;
+                    response.ErrorInfo = !validationResult["name"] ? "Username already taken" : "Email is already registered with us";
+                    response.HttpStatusCode = StatusCodes.Status403Forbidden;
+                    return response;
+                }
                 await _userInfoCollection.InsertOneAsync(userInfo);
                 response.IsSuccess = true;
                 response.HttpStatusCode = StatusCodes.Status201Created;
@@ -99,6 +107,38 @@ namespace Tweet_App_Service.Repositories
                 response.HttpStatusCode = StatusCodes.Status500InternalServerError;
             }
             return response;
+        }
+
+        private Dictionary<string,bool> CheckIsUsernameValid(string name,string email)
+        {
+            Dictionary<string, bool> result = new Dictionary<string, bool>();
+            result.Add("name", false);
+            result.Add("email", false);
+            UserInfo usernames = _userInfoCollection.Find(users => users.LoginId == name).FirstOrDefault();
+            UserInfo emails = _userInfoCollection.Find(users => users.Email == email).FirstOrDefault();
+            if(usernames== null && emails == null)
+            {
+                result["name"] = true;
+                result["email"] = true;
+                return result;
+            }
+            else
+            {
+                if(usernames != null && emails == null)
+                {
+                    result["name"] = false;
+                    result["email"] = true;
+                    return result;
+                }
+                if(emails != null && usernames == null)
+                {
+                    result["name"] = true;
+                    result["email"] = false;
+                    return result;
+                }
+            }
+
+            return result;
         }
 
     }

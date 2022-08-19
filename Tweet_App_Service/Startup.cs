@@ -78,7 +78,7 @@ namespace Tweet_App_Service
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseCors(pt => pt.WithOrigins(Configuration.GetValue<string>("clientApp")).AllowAnyMethod().AllowAnyHeader());
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
