@@ -33,6 +33,7 @@ namespace Tweet_App_UserInfo_Service
             services.AddControllers();
             services.AddSingleton<IDBContext, DBContext>();
             services.AddScoped<IUserInformationRepo, UserInformationRepo>();
+            services.AddScoped<IAuthenticationRepo, AuthenticationRepo>();
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "TweetAppUserInfoAPI", Version = "1.0" }));
 
