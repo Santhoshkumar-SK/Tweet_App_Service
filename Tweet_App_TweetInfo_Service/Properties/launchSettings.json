@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:47535",
-      "sslPort": 44371
+      "applicationUrl": "http://localhost:51092",
+      "sslPort": 44376
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Tweet_App_UserInfo_Service": {
+    "Tweet_App_TweetInfo_Service": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
