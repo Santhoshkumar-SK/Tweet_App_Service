@@ -5,12 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Tweet_App_TweetInfo_Service.Models;
-using Tweet_App_TweetInfo_Service.Repositories;
+using com.tweetapp.tweetinfoservice.Models;
+using com.tweetapp.tweetinfoservice.Repositories;
 
-namespace Tweet_App_TweetInfo_Service.Controllers
+namespace com.tweetapp.tweetinfoservice.Controllers
 {
-    [Route("api/v1.0/tweets")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class TweetsController : ControllerBase

@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Tweet_App_TweetInfo_Service.Models;
+using com.tweetapp.tweetinfoservice.Models;
 
-namespace Tweet_App_TweetInfo_Service.DataContext
+namespace com.tweetapp.tweetinfoservice.DataContext
 {
     public class DBContext : IDBContext
     {        

@@ -9,7 +9,7 @@ using Tweet_App_UserInfo_Service.Repositories;
 
 namespace Tweet_App_UserInfo_Service.Controllers
 {
-    [Route("api/v1.0/tweets")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {

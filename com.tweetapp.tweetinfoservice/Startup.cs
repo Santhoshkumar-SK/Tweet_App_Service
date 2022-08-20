@@ -13,10 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Tweet_App_TweetInfo_Service.DataContext;
-using Tweet_App_TweetInfo_Service.Repositories;
+using com.tweetapp.tweetinfoservice.DataContext;
+using com.tweetapp.tweetinfoservice.Repositories;
 
-namespace Tweet_App_TweetInfo_Service
+namespace com.tweetapp.tweetinfoservice
 {
     public class Startup
     {

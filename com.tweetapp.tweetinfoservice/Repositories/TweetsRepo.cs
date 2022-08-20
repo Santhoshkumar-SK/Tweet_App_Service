@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Tweet_App_TweetInfo_Service.DataContext;
-using Tweet_App_TweetInfo_Service.Models;
+using com.tweetapp.tweetinfoservice.DataContext;
+using com.tweetapp.tweetinfoservice.Models;
 
-namespace Tweet_App_TweetInfo_Service.Repositories
+namespace com.tweetapp.tweetinfoservice.Repositories
 {
     public class TweetsRepo : ITweetsRepo
     {
