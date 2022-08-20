@@ -7,10 +7,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Tweet_App_UserInfo_Service.DataContext;
-using Tweet_App_UserInfo_Service.Models;
+using com.tweetapp.userinfoservice.DataContext;
+using com.tweetapp.userinfoservice.Models;
 
-namespace Tweet_App_UserInfo_Service.Repositories
+namespace com.tweetapp.userinfoservice.Repositories
 {
     public class AuthenticationRepo : IAuthenticationRepo
     {

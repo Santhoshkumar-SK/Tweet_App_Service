@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Tweet_App_UserInfo_Service.Models;
+using com.tweetapp.userinfoservice.Models;
 
-namespace Tweet_App_UserInfo_Service.Repositories
+namespace com.tweetapp.userinfoservice.Repositories
 {
     public interface IAuthenticationRepo
     {

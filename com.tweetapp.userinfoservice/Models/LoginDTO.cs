@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Tweet_App_UserInfo_Service.Models
+namespace com.tweetapp.userinfoservice.Models
 {
     public class LoginDTO
     {
