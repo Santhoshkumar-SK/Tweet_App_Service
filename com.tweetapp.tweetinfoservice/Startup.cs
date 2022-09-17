@@ -15,6 +15,8 @@ using System.Text;
 using System.Threading.Tasks;
 using com.tweetapp.tweetinfoservice.DataContext;
 using com.tweetapp.tweetinfoservice.Repositories;
+using Confluent.Kafka;
+using com.tweetapp.tweetinfoservice.Services;
 
 namespace com.tweetapp.tweetinfoservice
 {
@@ -30,6 +32,16 @@ namespace com.tweetapp.tweetinfoservice
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddSingleton<ConsumerConfig>(opt =>
+            {
+                ConsumerConfig config = new ConsumerConfig();
+                config.BootstrapServers = Configuration.GetSection("KafkaSettings").GetValue<string>("bootstrapservers");
+                config.GroupId = Guid.NewGuid().ToString();
+                config.AutoOffsetReset = AutoOffsetReset.Earliest;
+                return config;
+            });
+            services.AddHostedService<TweetConsumerService>();
             services.AddControllers();
             services.AddSingleton<IDBContext, DBContext>();
             services.AddScoped<ITweetsRepo, TweetsRepo>();

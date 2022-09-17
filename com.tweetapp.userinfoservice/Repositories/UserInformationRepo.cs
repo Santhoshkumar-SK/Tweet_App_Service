@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using com.tweetapp.userinfoservice.DataContext;
+using com.tweetapp.userinfoservice.Models;
+using Confluent.Kafka;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
-using com.tweetapp.userinfoservice.DataContext;
-using com.tweetapp.userinfoservice.Models;
 
 namespace com.tweetapp.userinfoservice.Repositories
 {
@@ -14,9 +17,13 @@ namespace com.tweetapp.userinfoservice.Repositories
     {
         static readonly log4net.ILog _logging = log4net.LogManager.GetLogger(typeof(UserInformationRepo));
         private IMongoCollection<UserInfo> _userInfoCollection;
-        public UserInformationRepo(IDBContext dBContext)
+        private ProducerConfig _producerConfig;
+        private IConfiguration _config;
+        public UserInformationRepo(IDBContext dBContext, ProducerConfig producerConfig,IConfiguration config)
         {
             _userInfoCollection = dBContext.GetUserInfoCollection();
+            _config = config;
+            _producerConfig = producerConfig;
         }
 
         public async Task<BaseResponse<UserInfoResponse>> UserRegistration(UserInfo userInfo)
@@ -25,6 +32,7 @@ namespace com.tweetapp.userinfoservice.Repositories
             response.Result = new UserInfoResponse();
             try
             {
+                
                 var validationResult = CheckIsUsernameValid(userInfo.LoginId, userInfo.Email);
                 if (!validationResult["name"] || !validationResult["email"])
                 {
@@ -34,9 +42,23 @@ namespace com.tweetapp.userinfoservice.Repositories
                     return response;
                 }
                 await _userInfoCollection.InsertOneAsync(userInfo);
-                response.IsSuccess = true;
+                KafkaProducerData dataTosend = new KafkaProducerData()
+                {
+                    UserInterests = userInfo.Interests,
+                    UserName = userInfo.LoginId
+                };
+                bool resultFromKafka = SendDataToTweetServiceAsync(dataTosend).GetAwaiter().GetResult();
+                
+                if (resultFromKafka)
+                {
+                    response.IsSuccess = true;
+                    response.HttpStatusCode = StatusCodes.Status201Created;
+                    response.Result.ResponseMessage = $"Dear {userInfo.LoginId} Your Account Created Successfully";
+                    return response;
+                }
+                response.IsSuccess = false;
                 response.HttpStatusCode = StatusCodes.Status201Created;
-                response.Result.ResponseMessage = $"Dear {userInfo.LoginId} Your Account Created Successfully";
+                response.Result.ResponseMessage = $"Dear {userInfo.LoginId} Your Account Created but Interestes not created";
             }
             catch (Exception ex)
             {
@@ -46,6 +68,18 @@ namespace com.tweetapp.userinfoservice.Repositories
                 response.HttpStatusCode = StatusCodes.Status500InternalServerError;
             }
             return response;
+        }
+
+        private async Task<bool> SendDataToTweetServiceAsync(KafkaProducerData data)
+        {            
+            string jsonData = JsonSerializer.Serialize(data);
+            string topicname = _config.GetSection("KafkaSettings").GetValue<string>("TopicName");
+            using (var producer = new ProducerBuilder<Null, string>(_producerConfig).Build())
+            {
+                await producer.ProduceAsync(topicname, new Message<Null, string> { Value = jsonData });
+                //producer.Flush(TimeSpan.FromSeconds(10));
+                return true;
+            }
         }
 
         public async Task<BaseResponse<List<UserInfo>>> GetAllUsers()

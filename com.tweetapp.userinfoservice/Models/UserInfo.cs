@@ -18,5 +18,7 @@ namespace com.tweetapp.userinfoservice.Models
         public string Lastname { get; set; }
         public string Password { get; set; }
         public string ContactNumber { get; set; }
+        [BsonIgnore]
+        public List<string> Interests { get; set; }
     }
 }

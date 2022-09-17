@@ -26,5 +26,8 @@ namespace com.tweetapp.tweetinfoservice.DataContext
         public IMongoCollection<PostedTweet> GetTweetsCollection() =>
            _mongoDatabase.GetCollection<PostedTweet>(_config.GetSection("TweetAppDDSettings").GetSection("Collections").GetValue<string>("TweetsCollection"));
 
+        public IMongoCollection<UserInterests> GetUserInterestsCollection() =>
+           _mongoDatabase.GetCollection<UserInterests>(_config.GetSection("TweetAppDDSettings").GetSection("Collections").GetValue<string>("UserinterestCollection"));
+
     }
 }

@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using com.tweetapp.userinfoservice.DataContext;
 using com.tweetapp.userinfoservice.Repositories;
+using Confluent.Kafka;
 
 namespace com.tweetapp.userinfoservice
 {
@@ -30,6 +31,12 @@ namespace com.tweetapp.userinfoservice
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddSingleton<ProducerConfig>(opt => {
+                ProducerConfig producer = new ProducerConfig();
+                producer.BootstrapServers = Configuration.GetSection("KafkaSettings").GetValue<string>("bootstrapservers");
+                return producer;
+            });
             services.AddControllers();
             services.AddSingleton<IDBContext, DBContext>();
             services.AddScoped<IUserInformationRepo, UserInformationRepo>();

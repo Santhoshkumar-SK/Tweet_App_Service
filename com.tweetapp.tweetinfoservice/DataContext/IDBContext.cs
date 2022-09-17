@@ -10,5 +10,6 @@ namespace com.tweetapp.tweetinfoservice.DataContext
     public interface IDBContext
     {      
         public IMongoCollection<PostedTweet> GetTweetsCollection();
+        public IMongoCollection<UserInterests> GetUserInterestsCollection();
     }
 }
