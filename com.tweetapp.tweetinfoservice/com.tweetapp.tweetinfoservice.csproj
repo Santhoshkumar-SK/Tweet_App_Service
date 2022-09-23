@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <UserSecretsId>b5e27955-4773-46c5-ba2e-685f6cb95ec9</UserSecretsId>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -12,6 +13,12 @@
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
 		<PackageReference Include="MongoDB.Driver" Version="2.17.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="..\.dockerignore">
+			<DependentUpon>dockerfile</DependentUpon>
+		</None>
 	</ItemGroup>
 
 </Project>

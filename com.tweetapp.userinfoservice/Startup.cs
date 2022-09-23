@@ -31,8 +31,9 @@ namespace com.tweetapp.userinfoservice
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
-            services.AddSingleton<ProducerConfig>(opt => {
+
+            services.AddSingleton<ProducerConfig>(opt =>
+            {
                 ProducerConfig producer = new ProducerConfig();
                 producer.BootstrapServers = Configuration.GetSection("KafkaSettings").GetValue<string>("bootstrapservers");
                 return producer;
